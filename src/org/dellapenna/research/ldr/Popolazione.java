@@ -77,7 +77,7 @@ public class Popolazione {
             }
             // Aggiungo un individuo ogni 5 trasformazioni
             primaPopolazione.add(individuo);
-
+            primaPopolazione.add(individuo);
         }
         //Stampe di controllo della popolazione
         //    System.out.println("individuo nella poplazione " +it);
