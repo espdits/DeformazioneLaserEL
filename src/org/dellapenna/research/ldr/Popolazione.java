@@ -8,6 +8,8 @@ package org.dellapenna.research.ldr;
 import Servizi.gestioneSalvataggio;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -15,23 +17,21 @@ import java.util.Random;
  * @author marco
  */
 public class Popolazione {
-    
+
     //Variabile che conta le mosse da effettuare per creare la prima popolazione
-    final int contatoreMosse=5;
-    
+    final int contatoreMosse = 5;
+
     //Variabile che imposta la dimensione della popolazione
-    final int dimPopolazione=50;
+    final int dimPopolazione = 50;
 
     Random rq = new Random(); //per le prove
     Random rm = new Random(); //per le prove
 
-    
-    
     /**
      * Metodo che crea la prima popolazione, dove ogni individuo ha subito un
      * numero di mosse prestabilito, salvandola in un file esterno.
      */
-    public void creaPopolazione( ArrayList<LineaDeformabile> primaPopolazione) throws IOException {
+    public void creaPopolazione(ArrayList<LineaDeformabile> primaPopolazione) throws IOException {
         // ArrayList contenente gli individui generati
         primaPopolazione = new ArrayList<>();
         //fino a che non creo 50 individui 
@@ -77,7 +77,7 @@ public class Popolazione {
             }
             // Aggiungo un individuo ogni 5 trasformazioni
             primaPopolazione.add(individuo);
-            //jscjidsojfodihfahifchjaiohcaish
+
         }
         //Stampe di controllo della popolazione
         //    System.out.println("individuo nella poplazione " +it);
@@ -89,9 +89,306 @@ public class Popolazione {
         gestioneSalvataggio.salvaDATA(primaPopolazione, contatoreMosse);
     }
 
-    
-    public int valFitness(Linea linea, LineaDeformabile lineaDeformabile){
-        return 0;
+    /**
+     * Metodo che valuta la fitness di un individuo rispetto la linea data
+     *
+     * @param linea foram che si vuole ottenere
+     * @param lineaDeformabile individuo in esame
+     * @return val_fitness valore della funzione di fitness
+     */
+    public int valFitness(Linea linea, LineaDeformabile lineaDeformabile) {
+
+        int val_fitness = 0;
+        //iteratore della linea.
+        Iterator it_linea = linea.getQuadratiDeformati().entrySet().iterator();
+        //iteratore della linea deformabile
+        Iterator it_lineaDef = lineaDeformabile.getQuadratiDeformati().entrySet().iterator();
+
+        //per ogni quadrato della linea deformabile
+        // Verifica con il metodo hasNext() che nella hashmap
+        // ci siano altri elementi su cui ciclare
+        while (it_lineaDef.hasNext()) {
+
+            Map.Entry entry_lineaDef = (Map.Entry) it_lineaDef.next();
+            //Quadrato LINEA deformabile
+            Quadrato quadrato_lineaDef;
+            //quadrato in esame della Linea Deformabile
+            quadrato_lineaDef = (Quadrato) entry_lineaDef.getValue();
+
+            // prendo posizione del quadrato in esame
+            int posQLD;
+            posQLD = (int) entry_lineaDef.getKey();
+            //se ci sono quadrati limitrofi nella linea a quello selezionato della linea deformabile
+            // se il quadrato è nella medesima posizione 
+            if (linea.getQuadratiDeformati().containsKey(posQLD)) {
+                //Quadrato della linea da confutare
+                Quadrato quadrato_linea;
+                quadrato_linea = linea.getQuadratiDeformati().get(posQLD);
+                switch (quadrato_linea.nome_def) {
+                    case "UL":
+                        switch (quadrato_lineaDef.nome_def) {
+                            case "UL":
+                                //aggiorno fitness
+                                break;
+
+                            case "LL":
+                                //aggiorno fitness
+                                break;
+
+                            case "UR":
+                                //aggiorno fitness
+                                break;
+
+                            case "LR":
+                                //aggiorno fitness
+                                break;
+                        }
+                        break;
+                    case "LL":
+                        switch (quadrato_lineaDef.nome_def) {
+                            case "UL":
+                                //aggiorno fitness
+                                break;
+
+                            case "LL":
+                                //aggiorno fitness
+                                break;
+
+                            case "UR":
+                                //aggiorno fitness
+                                break;
+
+                            case "LR":
+                                //aggiorno fitness
+                                break;
+                        }
+
+                        break;
+                    case "UR":
+                        switch (quadrato_lineaDef.nome_def) {
+                            case "UL":
+                                //aggiorno fitness
+                                break;
+
+                            case "LL":
+                                //aggiorno fitness
+                                break;
+
+                            case "UR":
+                                //aggiorno fitness
+                                break;
+
+                            case "LR":
+                                //aggiorno fitness
+                                break;
+                        }
+
+                        break;
+                    case "LR":
+                        switch (quadrato_lineaDef.nome_def) {
+                            case "UL":
+                                //aggiorno fitness
+                                break;
+
+                            case "LL":
+                                //aggiorno fitness
+                                break;
+
+                            case "UR":
+                                //aggiorno fitness
+                                break;
+
+                            case "LR":
+                                //aggiorno fitness
+                                break;
+                        }
+
+                        break;
+
+                }
+            } // se è nella posizione -1 
+            else if (linea.getQuadratiDeformati().containsKey(posQLD - 1)) {
+                //Quadrato della linea da confutare
+                Quadrato quadrato_linea;
+                quadrato_linea = linea.getQuadratiDeformati().get(posQLD);
+                switch (quadrato_linea.nome_def) {
+                    case "UL":
+                        switch (quadrato_lineaDef.nome_def) {
+                            case "UL":
+                                //aggiorno fitness
+                                break;
+
+                            case "LL":
+                                //aggiorno fitness
+                                break;
+
+                            case "UR":
+                                //aggiorno fitness
+                                break;
+
+                            case "LR":
+                                //aggiorno fitness
+                                break;
+                        }
+                        break;
+                    case "LL":
+                        switch (quadrato_lineaDef.nome_def) {
+                            case "UL":
+                                //aggiorno fitness
+                                break;
+
+                            case "LL":
+                                //aggiorno fitness
+                                break;
+
+                            case "UR":
+                                //aggiorno fitness
+                                break;
+
+                            case "LR":
+                                //aggiorno fitness
+                                break;
+                        }
+
+                        break;
+                    case "UR":
+                        switch (quadrato_lineaDef.nome_def) {
+                            case "UL":
+                                //aggiorno fitness
+                                break;
+
+                            case "LL":
+                                //aggiorno fitness
+                                break;
+
+                            case "UR":
+                                //aggiorno fitness
+                                break;
+
+                            case "LR":
+                                //aggiorno fitness
+                                break;
+                        }
+
+                        break;
+                    case "LR":
+                        switch (quadrato_lineaDef.nome_def) {
+                            case "UL":
+                                //aggiorno fitness
+                                break;
+
+                            case "LL":
+                                //aggiorno fitness
+                                break;
+
+                            case "UR":
+                                //aggiorno fitness
+                                break;
+
+                            case "LR":
+                                //aggiorno fitness
+                                break;
+                        }
+
+                        break;
+
+                }
+
+            } //se è nella posizione +1
+            else if (linea.getQuadratiDeformati().containsKey(posQLD + 1)) {
+                //Quadrato della linea da confutare
+                Quadrato quadrato_linea;
+                quadrato_linea = linea.getQuadratiDeformati().get(posQLD);
+                switch (quadrato_linea.nome_def) {
+                    case "UL":
+                        switch (quadrato_lineaDef.nome_def) {
+                            case "UL":
+                                //aggiorno fitness
+                                break;
+
+                            case "LL":
+                                //aggiorno fitness
+                                break;
+
+                            case "UR":
+                                //aggiorno fitness
+                                break;
+
+                            case "LR":
+                                //aggiorno fitness
+                                break;
+                        }
+                        break;
+                    case "LL":
+                        switch (quadrato_lineaDef.nome_def) {
+                            case "UL":
+                                //aggiorno fitness
+                                break;
+
+                            case "LL":
+                                //aggiorno fitness
+                                break;
+
+                            case "UR":
+                                //aggiorno fitness
+                                break;
+
+                            case "LR":
+                                //aggiorno fitness
+                                break;
+                        }
+
+                        break;
+                    case "UR":
+                        switch (quadrato_lineaDef.nome_def) {
+                            case "UL":
+                                //aggiorno fitness
+                                break;
+
+                            case "LL":
+                                //aggiorno fitness
+                                break;
+
+                            case "UR":
+                                //aggiorno fitness
+                                break;
+
+                            case "LR":
+                                //aggiorno fitness
+                                break;
+                        }
+
+                        break;
+                    case "LR":
+                        switch (quadrato_lineaDef.nome_def) {
+                            case "UL":
+                                //aggiorno fitness
+                                break;
+
+                            case "LL":
+                                //aggiorno fitness
+                                break;
+
+                            case "UR":
+                                //aggiorno fitness
+                                break;
+
+                            case "LR":
+                                //aggiorno fitness
+                                break;
+                        }
+
+                        break;
+
+                }
+
+            } //non c'è nessun quadrato nelle posizioni limitrofi al quadrato della linea deformabile selezionatas
+            else {
+
+            }
+        }
+
+        return val_fitness;
     }
-    
+
 }

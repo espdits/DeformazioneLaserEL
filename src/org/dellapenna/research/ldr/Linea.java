@@ -48,6 +48,7 @@ public class Linea {
         }
     }
 
+     
     //preleva un quadrato dall'array sparso *per la modifica*. Se il quadrato non è stato
     //deformato, ne viene restituito uno non inizializzato, che è inserito nella lista
     //di quelli deformati.
@@ -114,6 +115,13 @@ public class Linea {
                     System.out.println("|||||||||||||||||||||||||||||||||| LINEA - FINE |||||||||||||||||||||||||||||||||||||||||||||||||||||||");
         }
     
+    /**
+     * Ritorna i quadrati deformati della linea
+     * @return quadrati_deformati: quadrati che hanno subito una modifica
+     */    
+        public Map<Integer, Quadrato> getQuadratiDeformati(){
+        return quadrati_deformati;
+    }
     }
     
     
