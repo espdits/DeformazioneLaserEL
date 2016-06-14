@@ -18,6 +18,11 @@ public class LineaDeformabile {
     ///
     private Map<Integer, Quadrato> quadrati_deformati = new TreeMap(); //la treemap mantiene i quadrati ordinati e ha tempo di accesso log(n)
     public final int lunghezza_linea = 50; //da definire caso per caso
+    private double val_fitness;
+    
+    public LineaDeformabile(){
+        this.val_fitness=0;
+    }
 
     @Override
     public int hashCode() {
@@ -108,6 +113,22 @@ public class LineaDeformabile {
     
     public Map<Integer, Quadrato> getQuadratiDeformati(){
         return quadrati_deformati;
+    }
+
+    /**
+     * Ritorna il valore di fitness
+     * @return val_fitness
+     */
+    public double getVal_fitness() {
+        return val_fitness;
+    }
+
+    /**
+     *  Setta il valore di fitness della Linea Deformabile
+     * @param val_fitness valore in double da settare
+     */
+    public void setVal_fitness(double val_fitness) {
+        this.val_fitness = val_fitness;
     }
     
     

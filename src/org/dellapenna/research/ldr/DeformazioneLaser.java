@@ -6,6 +6,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -17,22 +18,16 @@ import java.util.Set;
  * @author Giuseppe Della Penna
  */
 public class DeformazioneLaser {
-        
-  
 
-    
     //Insieme di Individui creati prima poplazione.
-    ArrayList<LineaDeformabile> primaPopolazione;
-    
-     
+    ArrayList<LineaDeformabile> primaPopolazione = new ArrayList<>();
+
     //la coda contiene gli stati (linee deformate e tempo corrente) da valutare
     //QUESTA STRUTTURA DOVREBBE ANDARE SU DISCO;
-    
     //la coda contiene gli stati (linee deformate e tempo corrente) da valutare
     //QUESTA STRUTTURA DOVREBBE ANDARE SU DISCO
     Queue<Stato> coda = new ArrayDeque(100);
-    
-    
+
     //l'insieme degli stati esplorati contiene le firme (hashCode) di tutti gli stati già valutati
     Set<Integer> esplorati = new HashSet(500);
     //la dinamica (inversa) costruita durante l'esplorazione. Necessaria per poter ricostruire il piano di lavoro
@@ -43,10 +38,6 @@ public class DeformazioneLaser {
     Random rq = new Random(); //per le prove
     Random rm = new Random(); //per le prove
 
-
-    
-    
-    
     //determina le prossime mosse valide da applicare allo stato corrente. Dovrebbe enumerarle o usare delle euristiche
     //per capire quelle più opportune. In questo esempio procediamo a caso...
     private List<MossaApplicata> prossimeMosseValide(Stato stato) {
@@ -152,33 +143,35 @@ public class DeformazioneLaser {
         }
     }
 
-    
     /**
-     * LOOP2 metodo per generare una popolazione salvare lavori valutare con la funzione di fitness e risalvare valori
+     * LOOP2 metodo per generare una popolazione salvare lavori valutare con la
+     * funzione di fitness e risalvare valori
+     *
      * @throws java.io.IOException
      */
-    public void loop2() throws IOException{
-    int[] pos = {22,28,32,37,45};
-        
-    Popolazione pop=new Popolazione();
-    //creo linea
-    Linea linea= new Linea();
-    linea.createManualLine(linea, pos);
-    linea.stampaLinea(linea);
-    //creo prima popolazione
-    pop.creaPopolazione(primaPopolazione);
-    
-    //confronto le linee della popolazione con la linea generata
-    
-    
-        
-        
+    public void loop2() throws IOException {
+        int[] pos = {22, 28, 32, 37, 45};
+
+        //inizializzazione Arraylist
+        Popolazione pop = new Popolazione();
+        //creo linea
+        Linea linea = new Linea();
+        linea.createManualLine(linea, pos);
+        linea.stampaLinea(linea);
+        //creo prima popolazione
+        //TODO PRIMA POPOLAZIONE RISULTA VUOTO RISOLVERE!!! 
+        pop.creaPopolazione(primaPopolazione);
+        primaPopolazione = pop.getPrimaPOP();
+      
+        //confronto le linee della popolazione con la linea generata e valuto il fitness
+        for (LineaDeformabile lineaDef : primaPopolazione) {
+            lineaDef.setVal_fitness(pop.valFitness(linea, lineaDef));
+        }
+
+        gestioneSalvataggio.salvaDATA(primaPopolazione, pop.getContatoreMosse());
+
     }
-    
-    
-   
-    
-    
+
     public static void main(String args[]) throws IOException {
         DeformazioneLaser instance = new DeformazioneLaser();
         instance.loop2();

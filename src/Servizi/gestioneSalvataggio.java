@@ -30,8 +30,10 @@ public abstract class gestioneSalvataggio {
         // Salvo i valori che devo salvare in una struttura dati di facile gestione.
         int matr_valori[][] = new int[primaPopolazione.size()][contatoreMosse];
         String matr_mod[][] = new String[primaPopolazione.size()][contatoreMosse];
-        //Stampa valori su schermo e riempe matrice di valori
-        riempiMatr(matr_valori, matr_mod, primaPopolazione);
+        double[] contFitness;
+        contFitness = new double[primaPopolazione.size()];
+        //Stampa valori su schermo e riempe matrice di valori e arraylist val_fitness
+        riempiMatr(matr_valori, matr_mod, primaPopolazione, contFitness);
 
         Workbook wb = new HSSFWorkbook();
         //Creo foglio Excel 
@@ -47,7 +49,7 @@ public abstract class gestioneSalvataggio {
         yellow.setBorderRight(CellStyle.BORDER_THIN);
         yellow.setBorderTop(CellStyle.BORDER_THIN);
         yellow.setAlignment(CellStyle.ALIGN_CENTER);
-        
+
         //Stile cella per gli individui blu prima riga 
         CellStyle blue_ind = wb.createCellStyle();
         blue_ind.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
@@ -55,8 +57,7 @@ public abstract class gestioneSalvataggio {
         blue_ind.setFillForegroundColor(HSSFColor.BLUE.index);
         blue_ind.setBorderRight(CellStyle.BORDER_THIN);
         blue_ind.setAlignment(CellStyle.ALIGN_CENTER);
-        
-        
+
         //Stile cella per gli individui blu riga 2
         CellStyle blue_ind2 = wb.createCellStyle();
         blue_ind2.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
@@ -65,7 +66,7 @@ public abstract class gestioneSalvataggio {
         blue_ind2.setBorderRight(CellStyle.BORDER_THIN);
         blue_ind2.setAlignment(CellStyle.ALIGN_CENTER);
         blue_ind2.setBorderBottom(CellStyle.BORDER_THIN);
-        
+
         //Stile cella per gli individui verdi riga 1
         CellStyle green_ind = wb.createCellStyle();
         green_ind.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
@@ -73,8 +74,7 @@ public abstract class gestioneSalvataggio {
         green_ind.setFillForegroundColor(HSSFColor.GREEN.index);
         green_ind.setBorderRight(CellStyle.BORDER_THIN);
         green_ind.setAlignment(CellStyle.ALIGN_CENTER);
-        
-        
+
         //Stile cella per gli individui verdi riga 2
         CellStyle green_ind2 = wb.createCellStyle();
         green_ind2.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
@@ -83,7 +83,7 @@ public abstract class gestioneSalvataggio {
         green_ind2.setBorderRight(CellStyle.BORDER_THIN);
         green_ind2.setAlignment(CellStyle.ALIGN_CENTER);
         green_ind2.setBorderBottom(CellStyle.BORDER_THIN);
-        
+
         //Stile cella per le posizioni blu
         CellStyle blue_pos = wb.createCellStyle();
         blue_pos.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
@@ -91,8 +91,6 @@ public abstract class gestioneSalvataggio {
         blue_pos.setFillForegroundColor(HSSFColor.BLUE.index);
         blue_pos.setBorderRight(CellStyle.BORDER_THIN);
         blue_pos.setAlignment(CellStyle.ALIGN_CENTER);
-        
-        
 
         //Stile cella per le posizioni verdi
         CellStyle green_pos = wb.createCellStyle();
@@ -101,8 +99,7 @@ public abstract class gestioneSalvataggio {
         green_pos.setFillForegroundColor(HSSFColor.GREEN.index);
         green_pos.setBorderRight(CellStyle.BORDER_THIN);
         green_pos.setAlignment(CellStyle.ALIGN_CENTER);
-        
-        
+
         //Stile cella per le modifiche blu
         CellStyle blue_mod = wb.createCellStyle();
         blue_mod.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
@@ -121,7 +118,26 @@ public abstract class gestioneSalvataggio {
         green_mod.setAlignment(CellStyle.ALIGN_CENTER);
         green_mod.setBorderBottom(CellStyle.BORDER_THIN);
 
+        //Stile cella per valore di fitness
+        CellStyle red = wb.createCellStyle();
+        red.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        red.setFillBackgroundColor(HSSFColor.RED.index);
+        red.setFillForegroundColor(HSSFColor.RED.index);
+        red.setBorderRight(CellStyle.BORDER_THIN);
+        red.setAlignment(CellStyle.ALIGN_CENTER);
+        red.setBorderBottom(CellStyle.BORDER_THIN);
+        red.setBorderTop(CellStyle.BORDER_THIN);
         
+        //Stile cella per cella numero valore di fitness
+        CellStyle pink = wb.createCellStyle();
+        pink.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        pink.setFillBackgroundColor(HSSFColor.PINK.index);
+        pink.setFillForegroundColor(HSSFColor.PINK.index);
+        pink.setBorderRight(CellStyle.BORDER_THIN);
+        pink.setAlignment(CellStyle.ALIGN_CENTER);
+        pink.setBorderBottom(CellStyle.BORDER_THIN);
+        pink.setBorderTop(CellStyle.BORDER_THIN);
+
         // indice individuo + supporto salvataggio prima riga POSIZIONE
         int individuo_index = 1;
         // supporto stampa valori + supporto salvataggio seconda riga MODIFICA
@@ -132,7 +148,7 @@ public abstract class gestioneSalvataggio {
         for (int numRighe = 0; numRighe <= (2 * primaPopolazione.size()); numRighe++) {
 
             Row row = sh.createRow(numRighe);
-            for (int cellnum = 0; cellnum < contatoreMosse + 1; cellnum++) {
+            for (int cellnum = 0; cellnum < contatoreMosse + 2; cellnum++) {
                 //Casella in alto a sx pos(0,0)
                 if (numRighe == 0 && cellnum == 0) {
                     Cell cell = row.createCell(cellnum);
@@ -162,6 +178,10 @@ public abstract class gestioneSalvataggio {
                         case 5:
                             cell.setCellValue("POS/MOD");
                             cell.setCellStyle(yellow);
+                            break;
+                        case 6:
+                            cell.setCellValue("Val. Fitness");
+                            cell.setCellStyle(red);
                             break;
                         default:
                             System.out.print("Errore cella file!");
@@ -196,7 +216,7 @@ public abstract class gestioneSalvataggio {
                 }
 
                 //riempo di dati!!!!!!
-                if (cellnum > 0 && numRighe > 0) {
+                if (cellnum > 0 && numRighe > 0 && cellnum <= contatoreMosse) {
                     Cell cell = row.createCell(cellnum);
                     switch (cellnum) {
                         default:
@@ -315,6 +335,13 @@ public abstract class gestioneSalvataggio {
                     }
 
                 }
+                if (numRighe > 0 && cellnum > contatoreMosse ) {
+                    Cell cell = row.createCell(cellnum);
+                    if (numRighe % 2 == 0) {
+                        cell.setCellStyle(pink);
+                        cell.setCellValue(contFitness[individuo_index - 2]);
+                    }
+                }
 
             }
 
@@ -341,10 +368,15 @@ public abstract class gestioneSalvataggio {
   } 
 }
      */
-    private static void riempiMatr(int[][] matr_valori, String[][] matr_mod, ArrayList<LineaDeformabile> primaPopolazione) {
+    private static void riempiMatr(int[][] matr_valori, String[][] matr_mod, ArrayList<LineaDeformabile> primaPopolazione, double[] contFitness) {
         for (int f = 0; f < primaPopolazione.size(); f++) {
+
             int index = 0;
             Map map = primaPopolazione.get(f).getQuadratiDeformati();
+
+            //riempio vettore di fitness
+            contFitness[f] = primaPopolazione.get(f).getVal_fitness();
+
             // Costruisce l'iteratore con il metodo dedicato
             Iterator it = map.entrySet().iterator();
             // Verifica con il metodo hasNext() che nella hashmap
@@ -363,7 +395,7 @@ public abstract class gestioneSalvataggio {
                 matr_mod[f][index] = (String) aux.nome_def;
                 index++;
             }
-            System.out.println("|||||||||||||||||||||||||||||||||| " + f + " |||||||||||||||||||||||||||||||||||||||||||||||||||||||");
+            System.out.println("|||||||||||||||||||||||||||||||||| " +"Individuo "+ (f+1) + " ------ VAL_FITNESS: "+ contFitness[f]+ " |||||||||||||||||||||||||||||||||||||||||||||||||||||||");
         }
     }
 
