@@ -1,6 +1,6 @@
 package org.dellapenna.research.ldr;
 
-import Servizi.gestioneSalvataggio;
+import Servizi.GestioneSalvataggio;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -168,7 +168,7 @@ public class DeformazioneLaser {
             lineaDef.setVal_fitness(pop.valFitness(linea, lineaDef));
         }
 
-        gestioneSalvataggio.salvaDATA(primaPopolazione, pop.getContatoreMosse());
+        GestioneSalvataggio.salvaDATA(primaPopolazione, pop.getContatoreMosse());
 
     }
 

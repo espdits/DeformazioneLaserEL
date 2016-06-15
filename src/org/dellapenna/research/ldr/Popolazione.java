@@ -5,7 +5,6 @@
  */
 package org.dellapenna.research.ldr;
 
-import Servizi.gestioneSalvataggio;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,13 +18,13 @@ import java.util.Random;
 public class Popolazione {
 
     //Variabile che conta le mosse da effettuare per creare la prima popolazione
-    final int contatoreMosse = 5;
+    private final int contatoreMosse = 5;
 
     //Variabile che imposta la dimensione della popolazione
-    final int dimPopolazione = 50;
+    private final int dimPopolazione = 50;
 
     //ArrayList salvataggio prima popolazione ?!!??!?!
-    ArrayList<LineaDeformabile> primaPOP = new ArrayList<>();
+    private ArrayList<LineaDeformabile> primaPOP = new ArrayList<>();
 
     Random rq = new Random(); //per le prove
     Random rm = new Random(); //per le prove
@@ -33,6 +32,10 @@ public class Popolazione {
     /**
      * Metodo che crea la prima popolazione, dove ogni individuo ha subito un
      * numero di mosse prestabilito, salvandola in un file esterno.
+     *
+     * @param primaPopolazione vettore passato da fuori il quale viene riempito
+     * con individuo raffiguranti la prima poplazione
+     * @throws java.io.IOException I/O eccezzione attualmente non gestita
      */
     public void creaPopolazione(ArrayList<LineaDeformabile> primaPopolazione) throws IOException {
         // ArrayList contenente gli individui generati
@@ -90,7 +93,7 @@ public class Popolazione {
         primaPOP = primaPopolazione;
 
         //Salvo su file
-       // gestioneSalvataggio.salvaDATA(primaPopolazione, contatoreMosse);
+        // gestioneSalvataggio.salvaDATA(primaPopolazione, contatoreMosse);
     }
 
     /**
@@ -103,17 +106,8 @@ public class Popolazione {
     public double valFitness(Linea linea, LineaDeformabile lineaDeformabile) {
 
         double val_fitness = 0;
-        //iteratore della linea.
-        Iterator it_linea = linea.getQuadratiDeformati().entrySet().iterator();
-        //iteratore della linea deformabile
-        Iterator it_lineaDef = lineaDeformabile.getQuadratiDeformati().entrySet().iterator();
-
-        //per ogni quadrato della linea deformabile
-        // Verifica con il metodo hasNext() che nella hashmap
-        // ci siano altri elementi su cui ciclare
-        while (it_lineaDef.hasNext()) {
-
-            Map.Entry entry_lineaDef = (Map.Entry) it_lineaDef.next();
+        //per ogni quadrato deformato della linea deformabile
+        for (Map.Entry entry_lineaDef : lineaDeformabile.getQuadratiDeformati().entrySet()) {
             //Quadrato LINEA deformabile
             Quadrato quadrato_lineaDef;
             //quadrato in esame della Linea Deformabile
@@ -130,8 +124,9 @@ public class Popolazione {
                 quadrato_linea = linea.getQuadratiDeformati().get(posQLD);
                 double auxFit;
                 auxFit = val_fitness;
+                // riduzione di peso non effettuata ( posizione giusta ) 
                 val_fitness = val_fitness + checkAndValutation(quadrato_linea, quadrato_lineaDef);
-
+                
             } // se è nella posizione -1 
             else if (linea.getQuadratiDeformati().containsKey(posQLD - 1)) {
                 //Quadrato della linea da confutare
@@ -140,8 +135,8 @@ public class Popolazione {
                 double auxFit;
                 auxFit = val_fitness;
 
-                val_fitness = val_fitness + ((checkAndValutation(quadrato_linea, quadrato_lineaDef))*0.7);
-         
+                //0.7 valore messo per far perdere peso al valore di fitness generato a causa della differenza di posizione
+                val_fitness = val_fitness + ((checkAndValutation(quadrato_linea, quadrato_lineaDef)) * 0.7);
 
             } //se è nella posizione +1
             else if (linea.getQuadratiDeformati().containsKey(posQLD + 1)) {
@@ -150,8 +145,8 @@ public class Popolazione {
                 quadrato_linea = linea.getQuadratiDeformati().get(posQLD + 1);
                 double auxFit;
                 auxFit = val_fitness;
-                val_fitness = val_fitness + ((checkAndValutation(quadrato_linea, quadrato_lineaDef))*0.7);
-             
+                //0.7 valore messo per far perdere peso al valore di fitness generato a causa della differenza di posizione
+                val_fitness = val_fitness + ((checkAndValutation(quadrato_linea, quadrato_lineaDef)) * 0.7);
 
             } //non c'è nessun quadrato nelle posizioni limitrofi al quadrato della linea deformabile selezionatas
             else {
@@ -195,7 +190,7 @@ public class Popolazione {
                         return val_fitness = 0.025;
                     //break;
                 }
-           //     break;
+            //     break;
             case "LL":
                 switch (quadrato_lineaDef.nome_def) {
                     case "LL":
@@ -219,7 +214,7 @@ public class Popolazione {
                     //break;
                 }
 
-             //   break;
+            //   break;
             case "UR":
                 switch (quadrato_lineaDef.nome_def) {
                     case "UR":
@@ -243,7 +238,7 @@ public class Popolazione {
                     //break;
                 }
 
-        //       break;
+            //       break;
             case "LR":
                 switch (quadrato_lineaDef.nome_def) {
                     case "LR":
@@ -267,13 +262,11 @@ public class Popolazione {
                     //break;
                 }
 
-          //     break;
-
+            //     break;
         }
         return 0; // se non è in nessun caso!??!??!? default
     }
 
- 
     /**
      * Ritorna la prima popolazione
      *
@@ -283,10 +276,22 @@ public class Popolazione {
         return primaPOP;
     }
 
+    /**
+     * Preleva il numero di mosse da effettuare su ogni linea deformabile
+     *
+     * @return numero di mosse da effettuare su ogni linea deformabile
+     */
     public int getContatoreMosse() {
         return contatoreMosse;
     }
-    
-    
-    
+
+    /**
+     * Preleva la dimensione della popolazione impostata manualmente
+     *
+     * @return dimensione della popolazione
+     */
+    public int getDimPosizione() {
+        return dimPopolazione;
+    }
+
 }

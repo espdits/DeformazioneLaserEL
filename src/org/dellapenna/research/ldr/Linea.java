@@ -13,10 +13,10 @@ import java.util.TreeMap;
  */
 public class Linea {
 
-    public static final int threshold_tempo_modifica = 1;
+   
     private static final Quadrato quadrato_default = new Quadrato();
     ///
-    private Map<Integer, Quadrato> quadrati_deformati = new TreeMap(); //la treemap mantiene i quadrati ordinati e ha tempo di accesso log(n)
+    private final Map<Integer, Quadrato> quadrati_deformati = new TreeMap(); //la treemap mantiene i quadrati ordinati e ha tempo di accesso log(n)
     public final int lunghezza_linea = 50; //da definire caso per caso
 
     //Metodo che permette la realizzazione di una linea Deformabile con X quadrati modificati
@@ -97,7 +97,11 @@ public class Linea {
     }
 
     
-    //Metodo di supporto per la stampa di posizione di modifica e tipo di modifica della linea
+    /**
+     * Metodo di supporto per la stampa di posizione di modifica e tipo di modifica della linea
+     * 
+     * @param linea in confutazione dal programma
+   */
     public void stampaLinea(Linea linea){
     
    
